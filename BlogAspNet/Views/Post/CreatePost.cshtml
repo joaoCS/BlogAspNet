@@ -1,0 +1,20 @@
+﻿@model BlogAspNet.Models.Post
+@{
+    ViewData["Title"] = "Criar Post";
+}
+
+<h1>Criar Post</h1>
+
+<form class="card p-3" method="post" asp-controller="Post" asp-action="CreatePost">
+    @Html.LabelFor(model => model.Titulo)
+    @Html.TextBoxFor(model => model.Titulo)
+
+    @Html.LabelFor(model => model.Texto)
+    @Html.TextAreaFor(model => model.Texto)
+
+
+    <button type="submit" class="btn btn-primary mt-3">Criar</button>
+
+</form>
+
+

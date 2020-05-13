@@ -1,0 +1,18 @@
+﻿@model BlogAspNet.Models.Post
+
+@{
+    ViewData["Title"] = "Editar Post";
+}
+
+<h1>Editar Post</h1>
+
+<form class="card p-3" method="post" asp-controller="Post" asp-action="Editar">
+    @Html.LabelFor(model => model.Titulo)
+    @Html.TextBoxFor(model => model.Titulo)
+
+    @Html.LabelFor(model => model.Texto)
+    @Html.TextAreaFor(model => model.Texto)
+
+    <button type="submit" class="btn btn-primary mt-3">Editar</button>
+
+</form>
