@@ -141,3 +141,4 @@ C:\Users\joaoa\source\repos\BlogAspNet\BlogAspNet\obj\Debug\netcoreapp3.1\BlogAs
 C:\Users\joaoa\source\repos\BlogAspNet\BlogAspNet\obj\Debug\netcoreapp3.1\Razor\Views\Post\CreatePost.cshtml.g.cs
 C:\Users\joaoa\source\repos\BlogAspNet\BlogAspNet\obj\Debug\netcoreapp3.1\Razor\Views\Post\Editar.cshtml.g.cs
 C:\Users\joaoa\source\repos\BlogAspNet\BlogAspNet\obj\Debug\netcoreapp3.1\Razor\Views\Post\Excluir.cshtml.g.cs
+C:\Users\joaoa\source\repos\BlogAspNet\BlogAspNet\obj\Debug\netcoreapp3.1\Razor\Views\Post\Details.cshtml.g.cs

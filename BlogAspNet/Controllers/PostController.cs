@@ -71,7 +71,12 @@ namespace BlogAspNet.Controllers
             return RedirectToAction("Index");
         }
 
-
+        public IActionResult Details(int id)
+        {
+            var post = _context.Posts.Find(id);
+            
+            return View(post);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
