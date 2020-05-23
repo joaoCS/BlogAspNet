@@ -1,11 +1,27 @@
-﻿@{
+﻿@model BlogAspNet.Models.AppUser
+@{
     ViewData["Title"] = "Registrar-se";
 }
 
-<h1>Registrar</h1>
+<h1>Registrar Usuário</h1>
 
-<p>@ViewBag.Message</p>
+<div class="row">
+    <form class="col-md-4 p-3" method="post" asp-controller="Account" asp-action="Register">
+        <label asp-for="UserName">Nome de usuário</label>
+        <input type="text" class="form-control" asp-for="UserName" />
+        
+        <label asp-for="Email">Email</label>
+        <input type="text" class="form-control" asp-for="Email" />
+        
+        <label asp-for="FirstName">Nome</label>
+        <input type="text" class="form-control" asp-for="FirstName" />
+        
+        <label asp-for="LastName">Sobrenome</label>
+        <input type="text" class="form-control" asp-for="LastName" />
+        
+        <label for="password">Senha</label>
+        <input type="password" class="form-control" name="password" />
 
-<div>
-    <a asp-controller="Account" asp-action="Login">Login</a>
+        <button type="submit" class="btn btn-primary m-3">Enviar</button>
+    </form>
 </div>

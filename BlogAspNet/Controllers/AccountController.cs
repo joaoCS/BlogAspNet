@@ -27,7 +27,7 @@ namespace BlogAspNet.Controllers
         {
             await SignInMgr.SignOutAsync();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Post");
         }
 
         [HttpGet]
@@ -43,7 +43,7 @@ namespace BlogAspNet.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Post");
             } 
             else
             {
@@ -53,32 +53,54 @@ namespace BlogAspNet.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Register()
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(AppUser user, string password)
         {
             try
             {
-                ViewBag.Message = "Usuário já registrado!";
-                AppUser user = await UsrMgr.FindByNameAsync("TestUser");
+                AppUser usr = await UsrMgr.FindByNameAsync(user.UserName);
 
-                if (user == null)
+                if (usr == null)
                 {
-                    user = new AppUser();
+                    //user.UserName = "TestUser";
+                    //user.Email = "TestUser@test.com";
+                    //user.FirstName = "John";
+                    //user.LastName = "Doe";
 
-                    user.UserName = "TestUser";
-                    user.Email = "TestUser@test.com";
-                    user.FirstName = "John";
-                    user.LastName = "Doe";
+                    Console.WriteLine(user.UserName);
+                    Console.WriteLine(user.Email);
+                    Console.WriteLine(user.FirstName);
+                    Console.WriteLine(user.LastName);
 
-                    IdentityResult result = await UsrMgr.CreateAsync(user, "Test123!");
-                    ViewBag.Message = "User was created";
+
+                    IdentityResult result = await UsrMgr.CreateAsync(user, password);
+                    ViewBag.Message = "Usuário foi registrado";
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+
+                    return View("RegisterConfirmation");
                 }
+                
+                ViewBag.Message = "Usuário já registrado!";
+                return View("RegisterConfirmation");
+                
             }
             catch (Exception ex)
             {
                 ViewBag.Message = ex.Message;
             }
 
-            return View();
+            return View("RegisterConfirmation");
         }
 
         [HttpGet]

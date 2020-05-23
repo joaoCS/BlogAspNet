@@ -25,16 +25,24 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="CreatePost">Criar post</a>
                         </li>
 
-                        <li>
+                        <li class="nav-item">
                             @if (User.Identity.IsAuthenticated)
                             {
-                            <a asp-controller="Account" asp-action="Logout">@User.Identity.Name, Logout</a>
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">@User.Identity.Name, Logout</a>
                             }
                             else
                             {
-                            <a asp-controller="Account" asp-action="Login">Login</a>
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
                             }
 
+                        </li>
+
+                        <li class="nav-item">
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Registrar-se</a>
+                            }
+                            
                         </li>
 
                     </ul>
