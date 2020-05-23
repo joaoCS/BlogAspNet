@@ -24,6 +24,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="CreatePost">Criar post</a>
                         </li>
+
+                        <li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                            <a asp-controller="Account" asp-action="Logout">@User.Identity.Name, Logout</a>
+                            }
+                            else
+                            {
+                            <a asp-controller="Account" asp-action="Login">Login</a>
+                            }
+
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -37,7 +50,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.Now.Year - BlogAspNet
+            Designed by João Antonio &copy; @DateTime.Now.Year - BlogAspNet 
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

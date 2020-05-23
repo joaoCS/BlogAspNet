@@ -11,11 +11,9 @@ namespace BlogAspNet.Controllers
 {
     public class PostController : Controller
     {
-        private readonly ILogger<PostController> _logger;
+        private readonly IdentityAppContext _context;
 
-        private readonly AppDbContext _context;
-
-        public PostController(AppDbContext context)
+        public PostController(IdentityAppContext context)
         {
             _context = context;
         }

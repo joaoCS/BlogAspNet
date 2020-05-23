@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlogAspNet.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(IdentityAppContext))]
     [Migration("20200511212534_InitialMigration")]
     partial class InitialMigration
     {
