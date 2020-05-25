@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlogAspNet.Models;
+using BlogAspNet.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -87,8 +88,10 @@ namespace BlogAspNet.Controllers
                         ModelState.AddModelError("", error.Description);
                     }
 
+                    if (result.Succeeded)
+                        return View("RegisterConfirmation");
 
-                    return View("RegisterConfirmation");
+                    return View();
                 }
                 
                 ViewBag.Message = "Usuário já registrado!";
@@ -129,6 +132,21 @@ namespace BlogAspNet.Controllers
                     Console.WriteLine(passwordResetLink.ToString());
 
                     logger.Log(LogLevel.Warning, passwordResetLink);
+
+
+                    string emailHtmlBody = "<!DOCTYPE html>" +
+                        "<html>" +
+                        "<head>" +
+                        "<title></title>" +
+                        "</head>" +
+                        "<body>" +
+                        "Clique no link para redefinir sua senha:" +
+                        "<br/>" +
+                        "<a href='" + passwordResetLink.ToString() + "'>Redefinir senha</a>" +
+                        "</body>" +
+                        "</html>";
+
+                    SendEmail.Send(model.Email, "BlogAspNet - Redefinir senha", emailHtmlBody);
 
                     return View("ForgotPasswordConfirmation");
                 }
@@ -182,7 +200,5 @@ namespace BlogAspNet.Controllers
 
             return View(model);
         }
-
-
     }
 }
