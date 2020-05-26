@@ -14,22 +14,30 @@
         {
             <div class="post-box m-3">
                 <div class="p-3">
-                    <a asp-controller="Post" asp-action="Editar" asp-route-id="@post.Id" class="float-right">Editar</a> <br />
-                    <a asp-controller="Post" asp-action="Excluir" asp-route-id="@post.Id" class="float-right">Excluir</a>
+
+                    @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Id == post.AppUserFK)
+                    {
+                        <a asp-controller="Post" asp-action="Editar" asp-route-id="@post.Id" class="float-right">Editar</a> <br />
+                        <a asp-controller="Post" asp-action="Excluir" asp-route-id="@post.Id" class="float-right">Excluir</a>
+                    }
+
                     <h3>@post.Titulo</h3>
 
                     @{
 
                         var texto = new System.Text.StringBuilder();
 
-                        for (int i = 0; i < 50; i++)
+                        if (post.Texto.Length >= 50)
                         {
-                            texto.Append(post.Texto[i]);
-                        }
+                            for (int i = 0; i < 50; i++)
+                            {
+                                texto.Append(post.Texto[i]);
+                            }
 
-                        texto.Append("...");
-                    
-                        post.Texto = texto.ToString();
+                            texto.Append("...");
+
+                            post.Texto = texto.ToString();
+                        }
                     }
 
                     <p>@post.Texto</p>

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlogAspNet.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlogAspNet.Controllers
 {
@@ -13,24 +15,36 @@ namespace BlogAspNet.Controllers
     {
         private readonly IdentityAppContext _context;
 
-        public PostController(IdentityAppContext context)
+        private UserManager<AppUser> _userManager;
+
+        public PostController(IdentityAppContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = user;
             return View(_context.Posts.ToList());
         }
 
+        [Authorize]
         public IActionResult CreatePost()
         {
             return View();
         }
         
         [HttpPost]
-        public IActionResult CreatePost(Post post)
+        [Authorize]
+        public async Task<IActionResult> CreatePostAsync(Post post)
         {
+
+            var user = await _userManager.GetUserAsync(User);
+
+            post.AppUserFK = user.Id;
 
             _context.Add(post);
             _context.SaveChanges();
@@ -38,6 +52,7 @@ namespace BlogAspNet.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public IActionResult Editar(int id)
         {
             var post = _context.Posts.Find(id);
@@ -45,6 +60,7 @@ namespace BlogAspNet.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Editar(Post post)
         {
             _context.Update(post);
@@ -53,6 +69,7 @@ namespace BlogAspNet.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public IActionResult Excluir (int id)
         {
             var post = _context.Posts.Find(id);
@@ -60,6 +77,7 @@ namespace BlogAspNet.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Apagar(int id)
         {
             var post = _context.Posts.Find(id);
