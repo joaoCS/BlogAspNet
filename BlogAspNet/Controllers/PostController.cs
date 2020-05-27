@@ -90,9 +90,20 @@ namespace BlogAspNet.Controllers
         public IActionResult Details(int id)
         {
             var post = _context.Posts.Find(id);
-            
 
-            
+            var comments = _context.Comments.Where(c => c.PostId == id).ToList();
+
+            var commentsListWithOwners = Enumerable.Repeat(new CommentClass() { Nome = "", Texto = "" }, 0).ToList();
+            //list.Add(new { ID = 753159, Name = "Lamont Cranston" });
+
+            foreach (var comment in comments)
+            {
+                var user = _userManager.Users.Where(user => user.Id == comment.AppUserFK).First();
+
+                commentsListWithOwners.Add(new CommentClass() { Nome = user.FirstName + " " + user.LastName, Texto = comment.Text});
+            }
+
+            ViewBag.Comments = commentsListWithOwners;
 
             return View(post);
         }

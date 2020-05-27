@@ -8,18 +8,27 @@
 <p>
     @Model.Texto;
 
-    
-    @if (@*User.Identity.IsAuthenticated*@ true) 
-    {
-        <p>Adicionar um comentário</p>
-        <form class="container" asp-controller="Comment" asp-action="Create">
-            <textarea rows="5" cols="15" class="form-control" name="texto"></textarea>
+    <div class="card m-4 p-4">
 
-            <input type="hidden" name="id" value=@Model.Id />
+        <b class="mb-3">Comentários</b>
 
-            <button type="submit" class="btn btn-primary m-3">Comentar</button>
-        </form>
-    }
+        @foreach (var comment in ViewBag.Comments)
+        {
+            <p class="comment-bg"> <b>@comment.Nome</b> @comment.Texto</p>
+        }
 
-</p>
+    </div>
+        <p>
+        @if (User.Identity.IsAuthenticated)
+                    {
+                        <p>Adicionar um comentário</p>
+                        <form class="container" asp-controller="Comment" asp-action="Create">
+                            <textarea rows="5" cols="15" class="form-control" name="texto"></textarea>
 
+                            <input type="hidden" name="id" value=@Model.Id />
+
+                            <button type="submit" class="btn btn-primary m-3">Comentar</button>
+                        </form>
+                    }
+
+        </p>
