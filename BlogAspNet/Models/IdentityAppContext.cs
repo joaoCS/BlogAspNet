@@ -14,5 +14,7 @@ namespace BlogAspNet.Models
         public IdentityAppContext(DbContextOptions<IdentityAppContext> options) : base(options) { }
 
         public DbSet<Post> Posts { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
     }
 }

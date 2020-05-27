@@ -6,17 +6,21 @@ using System.Threading.Tasks;
 
 namespace BlogAspNet.Models
 {
-    public class Post
+    public class Comment
     {
-        public Post() { }
+        public Comment () { }
 
         public int Id { get; set; }
-        public string Titulo { get; set; }
-        public string Texto { get; set; }
+        public string Text { get; set; }
 
         [ForeignKey("AppUser")]
         public int AppUserFK { get; set; }
 
-        public ICollection<Comment> Comments { get; set; }
+        [ForeignKey("Post")]
+        public int PostFK { get; set; }
+
+        [ForeignKey("PostId")]
+        public int PostId { get; set; }
+
     }
 }

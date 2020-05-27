@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogAspNet.Migrations
 {
     [DbContext(typeof(IdentityAppContext))]
-    [Migration("20200523190452_AddIdentityToDB")]
-    partial class AddIdentityToDB
+    [Migration("20200526235000_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,6 +100,9 @@ namespace BlogAspNet.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserFK")
+                        .HasColumnType("int");
 
                     b.Property<string>("Texto")
                         .HasColumnType("nvarchar(max)");

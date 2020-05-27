@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogAspNet.Migrations
 {
     [DbContext(typeof(IdentityAppContext))]
-    [Migration("20200526200040_AddAppUserForeignKey")]
-    partial class AddAppUserForeignKey
+    [Migration("20200526235325_AddComments")]
+    partial class AddComments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -92,6 +92,27 @@ namespace BlogAspNet.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("BlogAspNet.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostFK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("BlogAspNet.Models.Post", b =>

@@ -7,5 +7,19 @@
 
 <p>
     @Model.Texto;
+
+    
+    @if (@*User.Identity.IsAuthenticated*@ true) 
+    {
+        <p>Adicionar um comentário</p>
+        <form class="container" asp-controller="Comment" asp-action="Create">
+            <textarea rows="5" cols="15" class="form-control" name="texto"></textarea>
+
+            <input type="hidden" name="id" value=@Model.Id />
+
+            <button type="submit" class="btn btn-primary m-3">Comentar</button>
+        </form>
+    }
+
 </p>
 

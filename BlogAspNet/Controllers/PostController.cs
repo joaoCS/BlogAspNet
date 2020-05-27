@@ -91,6 +91,9 @@ namespace BlogAspNet.Controllers
         {
             var post = _context.Posts.Find(id);
             
+
+            
+
             return View(post);
         }
 
