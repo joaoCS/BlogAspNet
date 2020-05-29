@@ -9,6 +9,6 @@
     <h2 class="m-3">Tem certeza que deseja excluir este comentário?</h2>
 
     <button type="submit" class="btn btn-primary float-right">Sim</button>
-    <a class="btn btn-danger float-left" asp-action="Index" >Não</a>
+    <a class="btn btn-danger float-left" asp-controller="Post" asp-action="Details" asp-route-id="@Model.PostId">Não</a>
 
 </form>
