@@ -5,9 +5,20 @@
 
 <h1>@Model.Titulo</h1>
 
-<p>
-    @Model.Texto;
 
+<h6>@Model.UserName</h6>
+
+<div class="text-right">
+    @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Id == Model.AppUserFK)
+    {
+        <a asp-controller="Post" asp-action="Editar" asp-route-id="@Model.Id" class="float-right">Editar</a> <br />
+        <a asp-controller="Post" asp-action="Excluir" asp-route-id="@Model.Id" class="float-right">Excluir</a>
+    }
+</div>
+
+<p>
+    @Model.Texto
+    
     <div class="card m-4 p-4">
 
         <b class="mb-3">Comentários</b>

@@ -16,7 +16,7 @@ namespace BlogAspNet.Models
 
         [ForeignKey("AppUser")]
         public int AppUserFK { get; set; }
-
+        public string UserName { get; set; }
         public ICollection<Comment> Comments { get; set; }
     }
 }

@@ -45,6 +45,7 @@ namespace BlogAspNet.Controllers
             var user = await _userManager.GetUserAsync(User);
 
             post.AppUserFK = user.Id;
+            post.UserName = user.FirstName + " " + user.LastName;
 
             _context.Add(post);
             _context.SaveChanges();
