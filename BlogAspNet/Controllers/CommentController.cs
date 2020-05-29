@@ -50,5 +50,40 @@ namespace BlogAspNet.Controllers
             return RedirectToAction("Details", "Post", new { id = comm.PostFK});       
         }
 
+        public IActionResult Editar(int id, string postid)
+        {
+            var comment = _context.Comments.Find(id);
+
+            return View(comment);
+        }
+        
+        [HttpPost]
+        public IActionResult Editar(Comment comment)
+        {
+            _context.Update(comment);
+            _context.SaveChanges();
+
+            return RedirectToAction("Details", "Post", new { id = comment.PostId});
+        }
+
+        public IActionResult Excluir(int id)
+        {
+
+            Comment comment = _context.Comments.Find(id);
+
+            return View(comment);
+        }
+
+        [HttpPost]
+        public IActionResult Apagar(int id)
+        {
+            var comment = _context.Comments.Find(id);
+
+            _context.Remove(comment);
+            _context.SaveChanges();
+
+            return RedirectToAction("Details", "Post", new { id = comment.PostId });
+        }
+
     }
 }

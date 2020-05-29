@@ -14,21 +14,31 @@
 
         @foreach (var comment in ViewBag.Comments)
         {
-            <p class="comment-bg"> <b>@comment.Nome</b> @comment.Texto</p>
+            <div class="comment-bg">
+                <p> <b>@comment.Nome</b> @comment.Texto</p>
+
+                @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Id == comment.OwnerId)
+                {
+                    <div class="text-right">
+                        <a asp-controller="Comment" asp-action="Editar" asp-route-id="@comment.Id" asp-route-postid="@Model.Id">Editar</a>
+                        <a asp-controller="Comment" asp-action="Excluir" asp-route-id="@comment.Id">Excluir</a>
+                    </div>
+                }
+            </div>
         }
 
-    </div>
+        </div>
         <p>
-        @if (User.Identity.IsAuthenticated)
-                    {
-                        <p>Adicionar um comentário</p>
-                        <form class="container" asp-controller="Comment" asp-action="Create">
-                            <textarea rows="5" cols="15" class="form-control" name="texto"></textarea>
+            @if (User.Identity.IsAuthenticated)
+            {
+            <p>Adicionar um comentário</p>
+            <form class="container" asp-controller="Comment" asp-action="Create">
+                <textarea rows="5" cols="15" class="form-control" name="texto"></textarea>
 
-                            <input type="hidden" name="id" value=@Model.Id />
+                <input type="hidden" name="id" value=@Model.Id />
 
-                            <button type="submit" class="btn btn-primary m-3">Comentar</button>
-                        </form>
-                    }
+                <button type="submit" class="btn btn-primary m-3">Comentar</button>
+            </form>
+        }
 
-        </p>
+            </p>

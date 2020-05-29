@@ -1,0 +1,14 @@
+﻿@model BlogAspNet.Models.Comment
+@{
+    ViewData["Title"] = "Excluir Comentário";
+}
+
+<h1>Excluir Comentário</h1>
+
+<form class="confirm-delete" style="width: 600px;" method="post" asp-action="Apagar" asp-route-id="@Model.Id">
+    <h2 class="m-3">Tem certeza que deseja excluir este comentário?</h2>
+
+    <button type="submit" class="btn btn-primary float-right">Sim</button>
+    <a class="btn btn-danger float-left" asp-action="Index" >Não</a>
+
+</form>

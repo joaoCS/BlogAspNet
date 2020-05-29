@@ -87,21 +87,25 @@ namespace BlogAspNet.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> DetailsAsync(int id)
         {
             var post = _context.Posts.Find(id);
 
             var comments = _context.Comments.Where(c => c.PostId == id).ToList();
 
-            var commentsListWithOwners = Enumerable.Repeat(new CommentClass() { Nome = "", Texto = "" }, 0).ToList();
+            var commentsListWithOwners = Enumerable.Repeat(new CommentClass() { Id = 0, Nome = "", Texto = "", OwnerId = 0 }, 0).ToList();
             //list.Add(new { ID = 753159, Name = "Lamont Cranston" });
 
             foreach (var comment in comments)
             {
-                var user = _userManager.Users.Where(user => user.Id == comment.AppUserFK).First();
+                //pega o dono do comentário
+                var usr = _userManager.Users.Where(user => user.Id == comment.AppUserFK).First();
 
-                commentsListWithOwners.Add(new CommentClass() { Nome = user.FirstName + " " + user.LastName, Texto = comment.Text});
+                commentsListWithOwners.Add(new CommentClass() {Id = comment.Id, Nome = usr.FirstName + " " + usr.LastName, Texto = comment.Text, OwnerId = comment.AppUserFK});
             }
+
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = user;
 
             ViewBag.Comments = commentsListWithOwners;
 
