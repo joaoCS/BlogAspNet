@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.Web.CodeGeneration;
 
 namespace BlogAspNet.Controllers
 {
@@ -65,7 +66,7 @@ namespace BlogAspNet.Controllers
         {
             try
             {
-                AppUser usr = await UsrMgr.FindByNameAsync(user.UserName);
+                AppUser usr = await UsrMgr.FindByEmailAsync(user.Email);
 
                 if (usr == null)
                 {
@@ -74,36 +75,32 @@ namespace BlogAspNet.Controllers
                     //user.FirstName = "John";
                     //user.LastName = "Doe";
 
-                    Console.WriteLine(user.UserName);
-                    Console.WriteLine(user.Email);
-                    Console.WriteLine(user.FirstName);
-                    Console.WriteLine(user.LastName);
-
-
                     IdentityResult result = await UsrMgr.CreateAsync(user, password);
-                    ViewBag.Message = "Usuário foi registrado";
-
+                    
                     foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError("", error.Description);
                     }
 
-                    if (result.Succeeded)
+                    if (result.Succeeded) { 
+                        ViewBag.Message = "Usuário foi registrado";
+
                         return View("RegisterConfirmation");
+                    }
 
                     return View();
                 }
                 
-                ViewBag.Message = "Usuário já registrado!";
-                return View("RegisterConfirmation");
+                ViewBag.Message = "Email já registrado!";
+                return View();
                 
             }
             catch (Exception ex)
             {
                 ViewBag.Message = ex.Message;
-            }
 
-            return View("RegisterConfirmation");
+                return View();
+            }
         }
 
         [HttpGet]
@@ -129,10 +126,7 @@ namespace BlogAspNet.Controllers
                     var passwordResetLink = Url.Action("ResetPassword", "Account",
                             new { email = model.Email, token = token }, Request.Scheme);
 
-                    Console.WriteLine(passwordResetLink.ToString());
-
                     logger.Log(LogLevel.Warning, passwordResetLink);
-
 
                     string emailHtmlBody = "<!DOCTYPE html>" +
                         "<html>" +
@@ -152,7 +146,7 @@ namespace BlogAspNet.Controllers
                 }
 
                 ViewBag.Message = "Usuário não cadastrado ou email do usuário não foi confirmado!";
-                return View("ForgotPasswordConfirmation");
+                return View();
             }
 
             return View(model);
@@ -195,8 +189,12 @@ namespace BlogAspNet.Controllers
                     return View(model);
                 }
 
-                return View("ResetPasswordConfirmation");
+                ModelState.AddModelError("", "Usuário não encontrado!");
+                
+                return View(model);
             }
+
+            ModelState.AddModelError("", "Você forneceu algum dado inválido");
 
             return View(model);
         }
