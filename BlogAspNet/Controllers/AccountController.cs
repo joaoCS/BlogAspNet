@@ -61,47 +61,136 @@ namespace BlogAspNet.Controllers
             return View();
         }
 
+
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(AppUser user, string password)
         {
-            try
+            if (ModelState.IsValid)
             {
-                AppUser usr = await UsrMgr.FindByEmailAsync(user.Email);
-
-                if (usr == null)
+                try
                 {
-                    //user.UserName = "TestUser";
-                    //user.Email = "TestUser@test.com";
-                    //user.FirstName = "John";
-                    //user.LastName = "Doe";
+                  
+                    var result = await UsrMgr.CreateAsync(user, password);
 
-                    IdentityResult result = await UsrMgr.CreateAsync(user, password);
-                    
-                    foreach (var error in result.Errors)
+                    if (result.Succeeded)
                     {
-                        ModelState.AddModelError("", error.Description);
+                        var token = await UsrMgr.GenerateEmailConfirmationTokenAsync(user);
+
+                        var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                            new { userId = user.Id, token = token }, Request.Scheme);
+
+                        logger.Log(LogLevel.Warning, confirmationLink);
+
+
+                        string emailHtmlBody = "<!DOCTYPE html>" +
+                        "<html>" +
+                        "<head>" +
+                        "<title></title>" +
+                        "</head>" +
+                        "<body>" +
+                        "Clique no link para confirmar seu email:" +
+                        "<br/>" +
+                        "<a href='" + confirmationLink.ToString() + "'>Confirmar email</a>" +
+                        "</body>" +
+                        "</html>";
+
+                        SendEmail.Send(user.Email, "BlogAspNet - Confirmar email", emailHtmlBody);
+
+
+                        ViewBag.MessageTitle = "Registro feito com sucesso!";
+                        ViewBag.MessageBody = "Antes que você possa fazer login, por favor, confirme " +
+                                "seu email clicando no link de confirmação que mandamos para seu email";
+                        return View("ConfirmEmail");
                     }
 
-                    if (result.Succeeded) { 
-                        ViewBag.Message = "Usuário foi registrado";
-
-                        return View("RegisterConfirmation");
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
 
                     return View();
                 }
-                
-                ViewBag.Message = "Email já registrado!";
-                return View();
-                
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Message = ex.Message;
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
 
-                return View();
+                    return View();
+                }
             }
+
+            return View();
         }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+                return RedirectToAction("Index", "Post");
+            }
+
+            var user = await UsrMgr.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"O Id de usuário {userId} é inválido";
+                return View("Error");
+            }
+
+            var result = await UsrMgr.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                ViewBag.Message = "Email confirmado com sucesso!";
+
+                return View("Messages");
+            }
+
+            ViewBag.ErrorMessage = "Email não pôde ser confirmado :(";
+            return View("Error");
+        }
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> Register(AppUser user, string password)
+        //{
+        //    try
+        //    {
+        //        AppUser usr = await UsrMgr.FindByEmailAsync(user.Email);
+
+        //        if (usr == null)
+        //        {
+        //            //user.UserName = "TestUser";
+        //            //user.Email = "TestUser@test.com";
+        //            //user.FirstName = "John";
+        //            //user.LastName = "Doe";
+
+        //            IdentityResult result = await UsrMgr.CreateAsync(user, password);
+
+        //            foreach (var error in result.Errors)
+        //            {
+        //                ModelState.AddModelError("", error.Description);
+        //            }
+
+        //            if (result.Succeeded) { 
+        //                ViewBag.Message = "Usuário foi registrado";
+
+        //                return View("RegisterConfirmation");
+        //            }
+
+        //            return View();
+        //        }
+
+        //        ViewBag.Message = "Email já registrado!";
+        //        return View();
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ViewBag.Message = ex.Message;
+
+        //        return View();
+        //    }
+        //}
 
         [HttpGet]
         [AllowAnonymous]

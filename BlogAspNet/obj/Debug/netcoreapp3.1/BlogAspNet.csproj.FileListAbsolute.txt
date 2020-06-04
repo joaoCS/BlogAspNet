@@ -156,3 +156,6 @@ C:\Users\joaoa\source\repos\BlogAspNet\BlogAspNet\obj\Debug\netcoreapp3.1\Razor\
 C:\Users\joaoa\source\repos\BlogAspNet\BlogAspNet\obj\Debug\netcoreapp3.1\Razor\Views\Account\RegisterConfirmation.cshtml.g.cs
 C:\Users\joaoa\source\repos\BlogAspNet\BlogAspNet\obj\Debug\netcoreapp3.1\Razor\Views\Comment\Editar.cshtml.g.cs
 C:\Users\joaoa\source\repos\BlogAspNet\BlogAspNet\obj\Debug\netcoreapp3.1\Razor\Views\Comment\Excluir.cshtml.g.cs
+C:\Users\joaoa\source\repos\BlogAspNet\BlogAspNet\obj\Debug\netcoreapp3.1\Razor\Views\Account\ConfirmEmail.cshtml.g.cs
+C:\Users\joaoa\source\repos\BlogAspNet\BlogAspNet\obj\Debug\netcoreapp3.1\Razor\Views\Account\Error.cshtml.g.cs
+C:\Users\joaoa\source\repos\BlogAspNet\BlogAspNet\obj\Debug\netcoreapp3.1\Razor\Views\Account\Messages.cshtml.g.cs
