@@ -38,18 +38,45 @@ namespace BlogAspNet.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> Login(string username, string password)
+        //{
+        //    var result = await SignInMgr.PasswordSignInAsync(username, password, false, false);
+
+        //    if (result.Succeeded)
+        //    {
+        //        return RedirectToAction("Index", "Post");
+        //    } 
+        //    else
+        //    {
+        //        ViewBag.Result = "Result is " + result.ToString();
+        //    }
+
+        //    return View();
+        //}
+
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(string username, string password)
         {
-            var result = await SignInMgr.PasswordSignInAsync(username, password, false, false);
+            if (ModelState.IsValid)
+            {
+                var user = await UsrMgr.FindByNameAsync(username);
 
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "Post");
-            } 
-            else
-            {
-                ViewBag.Result = "Result is " + result.ToString();
+                if (user != null && !user.EmailConfirmed &&
+                            (await UsrMgr.CheckPasswordAsync(user, password)))
+                {
+                    ModelState.AddModelError(string.Empty, "Email ainda não confirmado");
+                    return View();
+                }
+
+                var result = await SignInMgr.PasswordSignInAsync(username,
+                                        password, false, false);
+
+                if (result.Succeeded)
+                    return RedirectToAction("Index", "Post");
+
+                ModelState.AddModelError(string.Empty, "Tentativa de login inválido");
             }
 
             return View();
