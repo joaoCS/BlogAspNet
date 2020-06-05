@@ -23,7 +23,7 @@
 
                     <h3>@post.Titulo</h3>
                     <h6>@post.UserName</h6>
-                    @{
+                    @*@{
 
                         var texto = new System.Text.StringBuilder();
 
@@ -40,7 +40,7 @@
                         }
                     }
 
-                    <p>@post.Texto</p>
+                    <p>@post.Texto</p>*@
 
                     <a asp-controller="Post" asp-action="Details" asp-route-id="@post.Id" class="">Ver detalhes...</a>
 

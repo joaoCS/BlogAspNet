@@ -124,7 +124,6 @@ namespace BlogAspNet.Controllers
 
                         SendEmail.Send(user.Email, "BlogAspNet - Confirmar email", emailHtmlBody);
 
-
                         ViewBag.MessageTitle = "Registro feito com sucesso!";
                         ViewBag.MessageBody = "Antes que você possa fazer login, por favor, confirme " +
                                 "seu email clicando no link de confirmação que mandamos para seu email";
